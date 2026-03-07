@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 llm = ChatOpenAI(
     model="Meta-Llama-3.1-8B-Instruct",
-    api_key="d40720e9-a75f-46ba-84f5-6b6339732d9e",
+    api_key="your_api_key",
     base_url="https://api.sambanova.ai/v1",
     temperature=0.9
 )
