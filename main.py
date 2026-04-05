@@ -1,6 +1,6 @@
 # server.py
 import os
-from mcp.server.fastmcp import FastMCP
+from  fastmcp import FastMCP
 from langchain_experimental.tools.python.tool import PythonREPLTool
 
 mcp = FastMCP("Prod MCP")
