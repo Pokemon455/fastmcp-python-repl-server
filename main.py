@@ -1,23 +1,22 @@
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
-from fastapi import FastAPI
+# server.py
+import os
+from mcp.server.fastmcp import FastMCP
+from langchain_experimental.tools.python.tool import PythonREPLTool
 
-llm = ChatOpenAI(
-    model="Meta-Llama-3.1-8B-Instruct",
-    api_key="your_api_key",
-    base_url="https://api.sambanova.ai/v1",
-    temperature=0.9
-)
+mcp = FastMCP("Prod MCP")
 
-app=FastAPI()
+python_tool = PythonREPLTool()
 
-@app.post("/frist_model")
-def model(Human: str, System : str= "you are helpful assistant "):
-    response = llm.invoke(
-        [
-            SystemMessage(content=System),
-            HumanMessage(content=Human)
-        ]
+@mcp.tool()
+def run_python(code: str) -> str:
+    return str(python_tool.invoke(code))
+
+if __name__ == "__main__":
+    # env se port lega (Render/Railway compatible)
+    port = int(os.getenv("PORT", 10000))
+    
+    mcp.run(
+        transport="streamable-http",  # production best
+        host="0.0.0.0",
+        port=port
     )
-    Result=response.content
-    return {"response": Result}
